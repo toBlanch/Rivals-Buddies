@@ -28,7 +28,7 @@ if(pratfall_counter >= 0)
 	pratfall_counter -= 1;
 	x = owner.x;
 	y = owner.y;
-	if(pratfall_counter < 0 && owner.state == PS_PRATFALL)
+	if(pratfall_counter < 0)
 	{
 		idle_spr = sprite_get("idle")
 		run_spr = sprite_get("idle")

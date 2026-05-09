@@ -1,7 +1,12 @@
-var attack = owner.attack;
-var has_hit = owner.has_hit || (attack.has_hit && previous_hitbox_num_to_hit != attack.hitbox_num);
+var has_hit = owner.has_hit;
 
 image_alpha = 0;
+if (has_hit && !previous_has_hit)
+{
+	movement_remaining_duration = movement_duration;
+	owner_starting_y = owner.y;
+}
+
 if (movement_remaining_duration > 0)
 {
 	movement_remaining_duration -= 1;
@@ -18,11 +23,9 @@ if (movement_remaining_duration > 0)
 	x = owner.x;
 	y = owner.y;
 }
-else if (has_hit && !previous_has_hit)
+else
 {
-	movement_remaining_duration = movement_duration;
-	owner_starting_y = owner.y;
-	previous_hitbox_num_to_hit = attack.hitbox_num;
+	owner.has_hit = false;
 }
 
 previous_has_hit = has_hit;

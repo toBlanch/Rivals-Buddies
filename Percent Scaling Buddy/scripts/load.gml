@@ -10,8 +10,7 @@ taunt_spr = sprite_get("idle");
 percent_scale = 10;
 max_percent_for_scaling = 250;
 
-owner_previous_sc = SC_IDLE;
-owner_previous_state_timer = 0;
+owner_previous_hitstun = 0;
 
 pet_w = 50;
 run_speed = 0;

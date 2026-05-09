@@ -5,12 +5,13 @@ x = owner.x;
 y = owner.y - 20;
 
 var percent_ratio = current_percent / 100;
-var dynamic_multiplier = 1 + (percent_ratio * percent_scale);
+var multiplier = percent_ratio * percent_scale;
 
-if (owner.state_cat == SC_HITSTUN && owner.state_timer > owner_previous_state_timer)
+if (owner.hitstun > owner_previous_hitstun)
 {
-    owner.state_timer = round(owner.state_timer * dynamic_multiplier);
+    var hitstun_increase = round(owner.hitstun * multiplier) + 500;
+    owner.hitstun += hitstun_increase;
 }
 
 owner_previous_sc = owner.state_cat;
-owner_previous_state_timer = owner.state_timer;
+owner_previous_hitstun = owner.hitstun;

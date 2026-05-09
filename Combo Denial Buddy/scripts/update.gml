@@ -1,9 +1,11 @@
 var attack = owner.attack;
 var has_hit = owner.has_hit || (attack.has_hit && previous_hitbox_num_to_hit != attack.hitbox_num);
 
+image_alpha = 0;
 if (movement_remaining_duration > 0)
 {
 	movement_remaining_duration -= 1;
+	image_alpha = 1;
 	var final_velocity_change = 0;
 	if (owner.spr_dir == -1){
 		final_velocity_change = velocity_change;

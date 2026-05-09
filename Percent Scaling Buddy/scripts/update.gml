@@ -9,7 +9,7 @@ var multiplier = percent_ratio * percent_scale;
 
 if (owner.hitstun > owner_previous_hitstun)
 {
-    var hitstun_increase = round(owner.hitstun * multiplier) + 500;
+    var hitstun_increase = round(owner.hitstun * multiplier);
     owner.hitstun += hitstun_increase;
 }
 

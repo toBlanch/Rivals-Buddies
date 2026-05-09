@@ -11,16 +11,15 @@ if (movement_remaining_duration > 0)
 	else{
 		final_velocity_change = -velocity_change;
 	}
-	if (owner.state_cat == SC_AIR_NEUTRAL || owner.state_cat == SC_AIR_COMMITTED)
-	{
-		final_velocity_change *= 0.5;
-	}
-	owner.hsp += final_velocity_change;
-	owner.hsp = clamp(owner.hsp, -maximum_velocity, maximum_velocity);
+	owner.hsp = final_velocity_change;
+	owner.y = owner_starting_y;
+	x = owner.x;
+	y = owner.y;
 }
 else if (has_hit && !previous_has_hit)
 {
 	movement_remaining_duration = movement_duration;
+	owner_starting_y = owner.y;
 	previous_hitbox_num_to_hit = attack.hitbox_num;
 }
 

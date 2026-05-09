@@ -7,10 +7,10 @@ ledge_spr = sprite_get("idle")
 wait_spr = sprite_get("idle")
 taunt_spr = sprite_get("idle")
 
-maximum_velocity = 20;
-velocity_change = 5;
+velocity_change = 10;
 movement_duration = 20;
 movement_remaining_duration = 0;
+owner_starting_y = 0;
 previous_has_hit = false;
 previous_hitbox_num_to_hit = noone;
 

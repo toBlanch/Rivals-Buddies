@@ -11,8 +11,7 @@ velocity_change = 10;
 movement_duration = 20;
 movement_remaining_duration = 0;
 owner_starting_y = 0;
-previous_has_hit = false;
-previous_hitbox_num_to_hit = noone;
+can_start = false;
 
 pet_w = 30;
 run_speed = 10;

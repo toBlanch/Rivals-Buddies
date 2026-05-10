@@ -1,20 +1,27 @@
 sprite_change_offset("idle", 12, 12);
 
-idle_spr = sprite_get("idle")
-run_spr = sprite_get("idle")
-turn_spr = sprite_get("idle")
-ledge_spr = sprite_get("idle")
-wait_spr = sprite_get("idle")
-taunt_spr = sprite_get("idle")
+default_sprite = sprite_get("idle");
+locked_sprite = sprite_get("locked");
+
+idle_spr = default_sprite;
+run_spr = default_sprite;
+turn_spr = default_sprite;
+ledge_spr = default_sprite;
+wait_spr = default_sprite;
+taunt_spr = default_sprite;
 
 // Constants
-rush_duration = 30;
 cooldown_duration = 5000; 
-pratfall_duration = 2;
+locked_duration = 2;
 
 move_cooldowns = ds_map_create(); 
-last_attack_state = -1;
-pratfall_counter = 0; 
+previous_owner_state_timer = -1;
+previous_owner_state = PS_IDLE;
+locked_remaining_duration = -1; 
+owner_initial_x = 0;
+owner_initial_y = 0;
+owner_initial_hsp = 0;
+owner_initial_vsp = 0;
 
 // Normal Buddy stats
 pet_w = 12;

@@ -7,10 +7,10 @@ ledge_spr = sprite_get("idle");
 wait_spr = sprite_get("idle");
 taunt_spr = sprite_get("idle");
 
-percent_scale = 3;
+percent_scale = 0.01;
 max_percent_for_scaling = 250;
 
-owner_previous_hitstun = 0;
+previous_current_percent = 0;
 
 pet_w = 50;
 run_speed = 0;

@@ -7,19 +7,19 @@ if(stunned)
     }
 }
 
-if(owner.state == PS_IDLE || owner.state == PS_CROUCH)
+if (owner.state == PS_DEAD)
+{
+    stamina = max_stamina;
+}
+else if (owner.state == PS_IDLE || owner.state == PS_CROUCH)
 {
     stamina += stamina_recovery_per_frame;
 }
-else if(owner.state == PS_WALK || owner.state == PS_WALK_TURN)
-{
-    stamina -= stamina_lost_while_walking;
-}
-else if(owner.state == PS_DASH_START || owner.state == PS_DASH || owner.state == PS_DASH_TURN || owner.state == PS_DASH_STOP)
+else if (owner.state == PS_DASH_START || owner.state == PS_DASH || owner.state == PS_DASH_TURN || owner.state == PS_DASH_STOP)
 {
     stamina -= stamina_lost_while_running;
 }
-else if(owner.state == PS_IDLE_AIR && owner.hsp != 0)
+else if (owner.state == PS_IDLE_AIR && owner.hsp != 0)
 {
     stamina -= stamina_lost_while_aerial;
 }
@@ -40,11 +40,17 @@ else
         {
             stamina -= stamina_lost_per_jump;
         }
+
+        if (stamina_sound_threshold > stamina && stamina > 0)
+        {
+            sound_play(sound_get("mfx_change_color"))
+        }
     }
 }
 
 if (stamina < 0)
 {
+    sound_play(sound_get("Ultrakill No Stamina"))
     stamina = 0;
     owner.hsp = 0;
     owner.vsp = 0;

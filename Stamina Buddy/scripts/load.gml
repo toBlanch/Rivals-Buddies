@@ -17,6 +17,7 @@ stamina_lost_while_aerial = 0.25;
 stamina_lost_per_jump = 10;
 stamina_lost_per_attack = 10;
 stamina_lost_per_dodge = 15;
+stamina_sound_threshold = max_stamina / 5;
 
 stamina = max_stamina;
 previous_owner_state = PS_IDLE;

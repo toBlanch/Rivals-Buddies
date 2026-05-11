@@ -1,70 +1,109 @@
-if(stunned)
-{
-    stunned = false;
-    if(owner.state == PS_PRATFALL)
-    {
-        owner.state = PS_IDLE;
-    }
-}
+var iterator = self;
+with (oPlayer) if "url" in self && !clone && ("fs_iterator_id" not in self || fs_iterator_id == iterator) { // we now magically have access to player variables and functions!
+	if player > 0 && player < 5 {
+		if "fs_char_initialized" not in self || (fs_char_initialized == false) {
+            // Maybe required
+			fs_player_count = 0;
+			fs_slot[1] = -1;
+			fs_slot[2] = -1;
+			fs_slot[3] = -1;
+			fs_slot[4] = -1;
+			with oPlayer if "url" in self && !clone {
+				other.fs_slot[player] = other.fs_player_count;
+				other.fs_player_count ++;
+			}
 
-if (owner.state == PS_DEAD)
-{
-    stamina = max_stamina;
-}
-else if (owner.state == PS_IDLE || owner.state == PS_CROUCH)
-{
-    stamina += stamina_recovery_per_frame;
-}
-else if (owner.state == PS_DASH_START || owner.state == PS_DASH || owner.state == PS_DASH_TURN || owner.state == PS_DASH_STOP)
-{
-    stamina -= stamina_lost_while_running;
-}
-else if (owner.state == PS_IDLE_AIR && owner.hsp != 0)
-{
-    stamina -= stamina_lost_while_aerial;
-}
-else
-{
-    var new_state_started = owner.state_timer < previous_owner_state_timer || owner.state != previous_owner_state;
-    if(new_state_started)
-    {
-        if(owner.state == PS_ATTACK_GROUND || owner.state == PS_ATTACK_AIR)
+            // Required values from FS buddy
+			var slot = fs_slot[player];
+			var offset = fs_player_count-1;
+			var vieww = view_get_wview()/8;
+			hud_x = view_get_wview()/2 + vieww * (offset - slot*2);
+			hud_y = view_get_hview()*0.9;
+
+            
+            max_stamina = 100;
+            stamina_recovery_per_frame = 1;
+            stamina_lost_while_walking = 0.1;
+            stamina_lost_while_running = 0.5;
+            stamina_lost_while_aerial = 0.25;
+            stamina_lost_per_jump = 10;
+            stamina_lost_per_attack = 10;
+            stamina_lost_per_dodge = 15;
+            stamina_sound_threshold = max_stamina / 5;
+
+            stamina = max_stamina;
+            previous_owner_state = PS_IDLE;
+            previous_owner_state_timer = -1;
+            stunned = false;
+		    
+            fs_char_initialized = true;
+		}
+
+        if(stunned)
         {
-            stamina -= stamina_lost_per_attack;
+            stunned = false;
+            if(state == PS_PRATFALL)
+            {
+                state = PS_IDLE;
+            }
         }
-        else if (owner.state == PS_PARRY || owner.state == PS_ROLL_FORWARD || owner.state == PS_ROLL_BACKWARD || owner.state == PS_TECH_GROUND || owner.state == PS_TECH_FORWARD || owner.state == PS_TECH_BACKWARD || owner.state == PS_WALL_TECH || owner.state == PS_AIR_DODGE)
+
+        if (state == PS_DEAD)
         {
-            stamina -= stamina_lost_per_dodge;
+            stamina = max_stamina;
         }
-        else if(owner.state == PS_FIRST_JUMP || owner.state == PS_SECOND_JUMP || owner.state == PS_WALL_JUMP)
+        else if (state == PS_IDLE || state == PS_CROUCH)
         {
-            stamina -= stamina_lost_per_jump;
+            stamina += stamina_recovery_per_frame;
         }
-
-        if (stamina_sound_threshold > stamina && stamina > 0)
+        else if (state == PS_DASH_START || state == PS_DASH || state == PS_DASH_TURN || state == PS_DASH_STOP)
         {
-            sound_play(sound_get("mfx_change_color"))
+            stamina -= stamina_lost_while_running;
         }
-    }
-}
+        else if (state == PS_IDLE_AIR && owner.hsp != 0)
+        {
+            stamina -= stamina_lost_while_aerial;
+        }
+        else
+        {
+            var new_state_started = state_timer < previous_owner_state_timer || state != previous_owner_state;
+            if(new_state_started)
+            {
+                if(state == PS_ATTACK_GROUND || state == PS_ATTACK_AIR)
+                {
+                    stamina -= stamina_lost_per_attack;
+                }
+                else if (state == PS_PARRY || state == PS_ROLL_FORWARD || state == PS_ROLL_BACKWARD || state == PS_TECH_GROUND || state == PS_TECH_FORWARD || state == PS_TECH_BACKWARD || state == PS_WALL_TECH || state == PS_AIR_DODGE)
+                {
+                    stamina -= stamina_lost_per_dodge;
+                }
+                else if(state == PS_FIRST_JUMP || state == PS_SECOND_JUMP || state == PS_WALL_JUMP)
+                {
+                    stamina -= stamina_lost_per_jump;
+                }
 
-if (stamina < 0)
-{
-    sound_play(sound_get("Ultrakill No Stamina"))
-    stamina = 0;
-    owner.hsp = 0;
-    owner.vsp = 0;
-    owner.state = PS_PRATFALL;
-    stunned = true;
-}
-else if (stamina > max_stamina)
-{
-    stamina = max_stamina;
-}
+                if (stamina_sound_threshold > stamina && stamina > 0)
+                {
+                    sound_play(sound_get("mfx_change_color"))
+                }
+            }
+        }
 
-x = owner.x;
-y = owner.y;
-width = stamina / max_stamina * pet_w;
+        if (stamina < 0)
+        {
+            sound_play(sound_get("Ultrakill No Stamina"))
+            stamina = 0;
+            hsp = 0;
+            vsp = 0;
+            state = PS_PRATFALL;
+            stunned = true;
+        }
+        else if (stamina > max_stamina)
+        {
+            stamina = max_stamina;
+        }
 
-previous_owner_state = owner.state;
-previous_owner_state_timer = owner.state_timer;
+        previous_owner_state = state;
+        previous_owner_state_timer = state_timer;
+	}
+}

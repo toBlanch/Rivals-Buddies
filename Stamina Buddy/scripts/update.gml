@@ -1,6 +1,6 @@
 var iterator = self;
-with (oPlayer) if "url" in self && !clone && ("fs_iterator_id" not in self || fs_iterator_id == iterator) { // we now magically have access to player variables and functions!
-	if player > 0 && player < 5 {
+with (oPlayer) if "url" in self && !clone && ("fs_iterator_id" not in self || fs_iterator_id == iterator) && "owner" in other && id == other.owner { // we now magically have access to player variables and functions!
+	if player > 0 && player < 5{
 		if "fs_char_initialized" not in self || (fs_char_initialized == false) {
             // Maybe required
 			fs_player_count = 0;

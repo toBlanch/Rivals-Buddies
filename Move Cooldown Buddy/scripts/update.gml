@@ -15,6 +15,8 @@ if(attack_just_started)
 		locked_remaining_duration = locked_duration;
 		owner.x = owner_initial_x;
 		owner.y = owner_initial_y;
+		owner.hsp = owner_initial_hsp;
+		owner.vsp = owner_initial_vsp;
 
 		sound_play(sound_get("disabled"));
 		idle_spr = locked_sprite;
@@ -31,8 +33,6 @@ if(locked_remaining_duration >= 0)
 	locked_remaining_duration -= 1;
 	x = owner.x;
 	y = owner.y;
-	owner.hsp = 0;
-	owner.vsp = 0;
 	if(locked_remaining_duration < 0)
 	{
 		idle_spr = default_sprite;
@@ -44,18 +44,13 @@ if(locked_remaining_duration >= 0)
 		if (owner.state == PS_PRATFALL)
 		{
 			owner.state = PS_IDLE;
-			owner.hsp = owner_initial_hsp;
-			owner.vsp = owner_initial_vsp;
 		}
 	}
 }
-else
-{
-	owner_initial_x = owner.x;
-	owner_initial_y = owner.y;
-	owner_initial_hsp = owner.hsp;
-	owner_initial_vsp = owner.vsp;
-}
 
+owner_initial_x = owner.x;
+owner_initial_y = owner.y;
+owner_initial_hsp = owner.hsp;
+owner_initial_vsp = owner.vsp;
 previous_owner_state = owner.state;
 previous_owner_state_timer = owner.state_timer;

@@ -23,8 +23,8 @@ with (oPlayer) if "url" in self && !clone && ("fs_iterator_id" not in self || fs
             
             max_stamina = 100;
             stamina_recovery_per_frame = 1;
-            stamina_lost_while_walking = 0.1;
-            stamina_lost_while_running = 0.5;
+            stamina_recovery_per_frame_while_walking = 0.5;
+            stamina_lost_while_running = 0.25;
             stamina_lost_while_aerial = 0.25;
             stamina_lost_per_jump = 10;
             stamina_lost_per_attack = 10;
@@ -32,21 +32,14 @@ with (oPlayer) if "url" in self && !clone && ("fs_iterator_id" not in self || fs
             stamina_sound_threshold = max_stamina / 5;
 
             stamina = max_stamina;
-            previous_owner_state = PS_IDLE;
-            previous_owner_state_timer = -1;
+            stun_duration = 5;
             stunned = false;
-		    
+
+            low_stamina_sound = sound_get("Pokemon Emerald Low HP");
+            out_of_stamina_sound = sound_get("Ultrakill No Stamina");	
+
             fs_char_initialized = true;
 		}
-
-        if(stunned)
-        {
-            stunned = false;
-            if(state == PS_PRATFALL)
-            {
-                state = PS_IDLE;
-            }
-        }
 
         if (state == PS_DEAD)
         {
@@ -56,17 +49,23 @@ with (oPlayer) if "url" in self && !clone && ("fs_iterator_id" not in self || fs
         {
             stamina += stamina_recovery_per_frame;
         }
+        else if (state == PS_WALK || state == PS_WALK_TURN)
+        {
+            stamina += stamina_recovery_per_frame_while_walking;
+        }
         else if (state == PS_DASH_START || state == PS_DASH || state == PS_DASH_TURN || state == PS_DASH_STOP)
         {
             stamina -= stamina_lost_while_running;
+            stamina = clamp(stamina, 0, max_stamina);
         }
         else if (state == PS_IDLE_AIR && owner.hsp != 0)
         {
             stamina -= stamina_lost_while_aerial;
+            stamina = clamp(stamina, 0, max_stamina);
         }
         else
         {
-            var new_state_started = state_timer < previous_owner_state_timer || state != previous_owner_state;
+            var new_state_started = state_timer == 0;
             if(new_state_started)
             {
                 if(state == PS_ATTACK_GROUND || state == PS_ATTACK_AIR)
@@ -80,21 +79,20 @@ with (oPlayer) if "url" in self && !clone && ("fs_iterator_id" not in self || fs
                 else if(state == PS_FIRST_JUMP || state == PS_SECOND_JUMP || state == PS_WALL_JUMP)
                 {
                     stamina -= stamina_lost_per_jump;
+                    stamina = clamp(stamina, 0, max_stamina);
                 }
 
-                if (stamina_sound_threshold > stamina && stamina > 0)
+                if (stamina_sound_threshold > stamina && stamina >= 0)
                 {
-                    sound_play(sound_get("mfx_change_color"))
+                    sound_play(low_stamina_sound);
                 }
             }
         }
 
         if (stamina < 0)
         {
-            sound_play(sound_get("Ultrakill No Stamina"))
+            sound_play(out_of_stamina_sound);
             stamina = 0;
-            hsp = 0;
-            vsp = 0;
             state = PS_PRATFALL;
             stunned = true;
         }
@@ -102,8 +100,5 @@ with (oPlayer) if "url" in self && !clone && ("fs_iterator_id" not in self || fs
         {
             stamina = max_stamina;
         }
-
-        previous_owner_state = state;
-        previous_owner_state_timer = state_timer;
 	}
 }

@@ -1,11 +1,12 @@
-sprite_change_offset("idle", 64, 64);
+sprite_change_offset("idle", 32, 32);
 
-idle_spr = sprite_get("idle");
-run_spr = sprite_get("idle");
-turn_spr = sprite_get("idle");
-ledge_spr = sprite_get("idle");
-wait_spr = sprite_get("idle");
-taunt_spr = sprite_get("idle");
+default_sprite = sprite_get("idle");
+idle_spr = default_sprite;
+run_spr = default_sprite;
+turn_spr = default_sprite;
+ledge_spr = default_sprite;
+wait_spr = default_sprite;
+taunt_spr = default_sprite;
 
 percent_scale = 0.01;
 max_percent_for_scaling = 250;

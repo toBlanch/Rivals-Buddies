@@ -12,11 +12,9 @@ taunt_spr = default_sprite;
 
 // Constants
 cooldown_duration = 5000; 
-locked_duration = 2;
+locked_duration = 20;
 
 move_cooldowns = ds_map_create(); 
-previous_owner_state_timer = -1;
-previous_owner_state = PS_IDLE;
 locked_remaining_duration = -1; 
 owner_initial_x = 0;
 owner_initial_y = 0;

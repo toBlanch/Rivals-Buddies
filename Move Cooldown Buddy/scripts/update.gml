@@ -1,7 +1,4 @@
-var attacking = owner.state == PS_ATTACK_AIR || owner.state == PS_ATTACK_GROUND;
-var new_state_started = owner.state_timer < previous_owner_state_timer || owner.state != previous_owner_state;
-var attack_just_started = attacking && new_state_started;
-
+var attack_just_started = (owner.state == PS_ATTACK_AIR || owner.state == PS_ATTACK_GROUND) && owner.state_timer == 0;
 if(attack_just_started)
 {
 	var attack_exists = ds_map_exists(move_cooldowns, owner.attack);
@@ -52,5 +49,3 @@ owner_initial_x = owner.x;
 owner_initial_y = owner.y;
 owner_initial_hsp = owner.hsp;
 owner_initial_vsp = owner.vsp;
-previous_owner_state = owner.state;
-previous_owner_state_timer = owner.state_timer;
